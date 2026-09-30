@@ -1,0 +1,525 @@
+/* ── Reset & Base ── */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--vscode-font-family);
+  font-size: var(--vscode-font-size);
+  color: var(--vscode-foreground);
+  background: var(--vscode-sideBar-background);
+  min-height: 100vh;
+}
+
+/* ── Loading ── */
+.loading-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--vscode-foreground);
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+.spin { animation: spin 0.7s linear infinite; }
+
+/* ── Onboarding ── */
+.onboarding {
+  padding: 1.2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.onboarding-header h2 { font-size: 1.1rem; font-weight: 600; }
+.subtitle { opacity: 0.6; font-size: 0.8rem; margin-top: 0.2rem; }
+
+.steps-indicator {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.step-dot {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--vscode-input-background);
+  border: 1px solid var(--vscode-input-border, #555);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  color: var(--vscode-foreground);
+}
+
+.step-dot.active {
+  background: var(--vscode-button-background);
+  color: var(--vscode-button-foreground);
+  border-color: var(--vscode-button-background);
+}
+
+.step-dot.done {
+  background: var(--vscode-terminal-ansiGreen, #4caf50);
+  border-color: transparent;
+  color: white;
+}
+
+.step-panel { display: flex; flex-direction: column; gap: 0.8rem; }
+.step-panel h3 { font-size: 0.95rem; font-weight: 600; }
+.step-panel.center { align-items: center; text-align: center; padding: 1rem 0; }
+
+.help-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.75rem;
+  color: var(--vscode-textLink-foreground);
+  text-decoration: none;
+}
+.help-link:hover { text-decoration: underline; }
+
+/* ── Fields ── */
+.field { display: flex; flex-direction: column; gap: 0.3rem; }
+.field label { font-size: 0.75rem; opacity: 0.8; }
+
+input {
+  background: var(--vscode-input-background);
+  color: var(--vscode-input-foreground);
+  border: 1px solid var(--vscode-input-border, #555);
+  border-radius: 4px;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.85rem;
+  width: 100%;
+  outline: none;
+}
+input:focus { border-color: var(--vscode-focusBorder); }
+
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.input-with-icon input { padding-right: 2rem; }
+.input-with-icon .icon-btn {
+  position: absolute;
+  right: 0.4rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--vscode-foreground);
+  opacity: 0.6;
+  padding: 0;
+}
+
+/* ── Buttons ── */
+.primary-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  background: var(--vscode-button-background);
+  color: var(--vscode-button-foreground);
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 0.2rem;
+}
+.primary-btn:hover { background: var(--vscode-button-hoverBackground); }
+.primary-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--vscode-foreground);
+  display: flex;
+  align-items: center;
+  padding: 0.2rem;
+  border-radius: 3px;
+}
+.icon-btn:hover { background: var(--vscode-toolbar-hoverBackground); }
+
+/* ── Banners ── */
+.error-banner {
+  background: var(--vscode-inputValidation-errorBackground, #5a1d1d);
+  border: 1px solid var(--vscode-inputValidation-errorBorder, #be1100);
+  color: var(--vscode-foreground);
+  padding: 0.5rem 0.7rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+.success-banner {
+  background: var(--vscode-inputValidation-infoBackground, #1d3a5a);
+  border: 1px solid var(--vscode-inputValidation-infoBorder, #007acc);
+  padding: 0.5rem 0.7rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+.success-icon { color: var(--vscode-terminal-ansiGreen, #4caf50); }
+
+/* ── Main Panel ── */
+.main-panel { display: flex; flex-direction: column; height: 100vh; }
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid var(--vscode-sideBarSectionHeader-border, #333);
+}
+
+.panel-header h2 { font-size: 1rem; font-weight: 600; color: whitesmoke;}
+
+/* ── Main Panel ── */
+.panel-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  padding: 1rem;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.date-field { max-width: 180px; }
+
+/* ── Entry Cards ── */
+.entries-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.entry-card {
+  background: var(--vscode-input-background);
+  border: 1px solid var(--vscode-input-border, #444);
+  border-radius: 6px;
+  padding: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.entry-card--error {
+  border-color: var(--vscode-inputValidation-errorBorder, #be1100);
+}
+
+.entry-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.entry-index {
+  font-size: 0.75rem;
+  font-weight: 600;
+  opacity: 0.7;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.entry-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+
+.entry-error {
+  font-size: 0.75rem;
+  color: var(--vscode-inputValidation-errorForeground, #f48771);
+}
+
+/* ── Buttons ── */
+.secondary-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  background: transparent;
+  color: var(--vscode-foreground);
+  border: 1px dashed var(--vscode-input-border, #555);
+  border-radius: 4px;
+  padding: 0.45rem 1rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  width: 100%;
+}
+.secondary-btn:hover {
+  background: var(--vscode-toolbar-hoverBackground);
+  border-style: solid;
+}
+
+.submit-btn { margin-top: 0.2rem; }
+
+.icon-btn.danger:hover {
+  color: var(--vscode-inputValidation-errorForeground, #f48771);
+}
+
+.label-hint {
+  font-size: 0.65rem;
+  opacity: 0.5;
+  font-weight: normal;
+}
+
+/* ── Logged List ── */
+.logged-list {
+  border: 1px solid var(--vscode-input-border, #444);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.logged-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.7rem;
+  background: var(--vscode-sideBar-background);
+}
+
+.collapse-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: none;
+  border: none;
+  color: var(--vscode-foreground);
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0;
+}
+
+.logged-total {
+  font-size: 0.7rem;
+  background: var(--vscode-button-background);
+  color: var(--vscode-button-foreground);
+  padding: 0.1rem 0.4rem;
+  border-radius: 10px;
+}
+
+.logged-entries {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.logged-empty {
+  padding: 0.8rem;
+  font-size: 0.8rem;
+  opacity: 0.5;
+  text-align: center;
+}
+
+.logged-entry {
+  padding: 0.6rem 0.8rem;
+  border-top: 1px solid var(--vscode-input-border, #333);
+  transition: opacity 0.2s;
+}
+
+.logged-entry--deleting { opacity: 0.4; pointer-events: none; }
+
+.logged-entry-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logged-ticket {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--vscode-textLink-foreground);
+}
+
+.logged-actions { display: flex; gap: 0.2rem; }
+
+.logged-summary {
+  font-size: 0.78rem;
+  opacity: 0.7;
+  margin: 0.2rem 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.logged-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.72rem;
+  opacity: 0.6;
+  margin-top: 0.2rem;
+}
+
+.logged-meta span {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+/* ── Modal ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 1rem;
+}
+
+.modal {
+  background: var(--vscode-editor-background);
+  border: 1px solid var(--vscode-input-border, #555);
+  border-radius: 8px;
+  width: 100%;
+  max-width: 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid var(--vscode-input-border, #333);
+}
+
+.modal-title { font-weight: 600; font-size: 0.9rem; }
+
+.modal-body {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.modal-summary {
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+.modal-footer {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  padding: 0.8rem 1rem;
+  border-top: 1px solid var(--vscode-input-border, #333);
+}
+
+/* ── Section Divider ── */
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.4rem 0;
+}
+
+.section-divider span {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.4;
+  white-space: nowrap;
+}
+
+.section-divider::before,
+.section-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--vscode-input-border, #444);
+}
+
+/* ── Logged list date input ── */
+.logged-header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.logged-date-input {
+  font-size: 0.72rem;
+  padding: 0.2rem 0.3rem;
+  width: 115px;
+  background: var(--vscode-input-background);
+  color: var(--vscode-input-foreground);
+  border: 1px solid var(--vscode-input-border, #555);
+  border-radius: 3px;
+}
+
+/* ── Ticket Hint ── */
+.ticket-hint {
+  font-size: 0.72rem;
+  margin-top: 0.15rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ticket-hint--loading { opacity: 0.5; }
+.ticket-hint--found { color: var(--vscode-terminal-ansiGreen, #4caf50); }
+.ticket-hint--error { color: var(--vscode-inputValidation-errorForeground, #f48771); }
+
+/* ── Ticket Suggestions ── */
+.ticket-field { position: relative; }
+
+.ticket-suggestions {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--vscode-input-border, #444);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 0.2rem;
+}
+
+.ticket-suggestion {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.1rem;
+  padding: 0.4rem 0.6rem;
+  background: var(--vscode-input-background);
+  border: none;
+  border-bottom: 1px solid var(--vscode-input-border, #333);
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+}
+
+.ticket-suggestion:last-child { border-bottom: none; }
+
+.ticket-suggestion:hover,
+.ticket-suggestion--selected {
+  background: var(--vscode-list-hoverBackground);
+}
+
+.suggestion-key {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--vscode-textLink-foreground);
+}
+
+.suggestion-summary {
+  font-size: 0.72rem;
+  color: var(--vscode-foreground);
+  opacity: 0.7;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
