@@ -1,0 +1,59 @@
+{
+  "name": "tempofiller",
+  "displayName": "Tempo Filler",
+  "description": "Log time to Tempo directly from VS Code",
+  "version": "0.0.1",
+  "publisher": "coderBhaggu",
+  "icon": "images/clock.png",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "tempo-logger",
+          "title": "Tempo Filler",
+          "icon": "$(clock)"
+        }
+      ]
+    },
+    "views": {
+      "tempo-logger": [
+        {
+          "type": "webview",
+          "id": "tempofiller.mainView",
+          "name": "Tempo Filler",
+          "icon": "images/clock.svg"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "tempofiller.openPanel",
+        "title": "Open Tempo Filler"
+      }
+    ]
+  },
+  "scripts": {
+    "install:all": "npm install && cd webview-ui && npm install",
+    "build:webview": "cd webview-ui && npm run build",
+    "vscode:prepublish": "npm run build:webview && npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "dev": "concurrently \"npm run watch\" \"cd webview-ui && npm run dev\""
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.85.0",
+    "concurrently": "^8.2.0",
+    "typescript": "^5.3.0"
+  }
+}
